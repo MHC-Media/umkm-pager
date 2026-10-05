@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="id" class="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout Pesanan - UMKM Kelurahan Pager</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: { colors: { primary: { 500: '#22c55e', 600: '#16a34a', 700: '#15803d' } } }
+      }
+    }
+  </script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 min-h-screen flex flex-col font-sans py-8">
+
+  <main class="max-w-3xl w-full mx-auto px-4">
+    <div class="mb-6 flex items-center space-x-3">
+      <a href="cart.html" class="p-2 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm"><i data-lucide="arrow-left" class="w-5 h-5"></i></a>
+      <h1 class="text-xl font-bold">Konfirmasi Checkout & Pemesanan</h1>
+    </div>
+
+    <form id="checkout-form" class="space-y-6 bg-white dark:bg-gray-800 p-6 sm:p-8 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm">
+      
+      <!-- Informasi Pemesan -->
+      <div class="space-y-4">
+        <h3 class="font-bold text-base border-b border-gray-100 dark:border-gray-700 pb-2">1. Informasi Penerima</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-semibold uppercase text-gray-500 mb-1">Nama Lengkap</label>
+            <input type="text" id="nama" required class="w-full px-4 py-2.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-transparent text-sm focus:ring-2 focus:ring-primary-500 focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase text-gray-500 mb-1">Nomor WhatsApp Aktif</label>
+            <input type="text" id="whatsapp" placeholder="628xxxxxxxxxx" required class="w-full px-4 py-2.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-transparent text-sm focus:ring-2 focus:ring-primary-500 focus:outline-none">
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold uppercase text-gray-500 mb-1">Alamat Lengkap Pengiriman di Kelurahan Pager</label>
+          <textarea id="alamat" rows="3" required placeholder="Nama jalan, RT/RW, nomor rumah, patokan..." class="w-full px-4 py-2.5 rounded-xl border border-gray-300 dark:border-gray-700 bg-transparent text-sm focus:ring-2 focus:ring-primary-500 focus:outline-none"></textarea>
+        </div>
+      </div>
+
+      <!-- Metode Pembayaran -->
+      <div class="space-y-4">
+        <h3 class="font-bold text-base border-b border-gray-100 dark:border-gray-700 pb-2">2. Metode Pembayaran</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <label class="border border-primary-500 bg-primary-50 dark:bg-primary-900/20 p-4 rounded-xl flex flex-col cursor-pointer">
+            <span class="font-semibold text-sm">WhatsApp Order</span>
+            <span class="text-xs text-gray-500 mt-1">Kirim pesanan langsung via chat WA UMKM</span>
+            <input type="radio" name="payment" value="WHATSAPP" checked class="mt-3 accent-primary-600">
+          </label>
+          <label class="border border-gray-200 dark:border-gray-700 p-4 rounded-xl flex flex-col cursor-pointer hover:border-gray-400">
+            <span class="font-semibold text-sm">COD (Bayar di Tempat)</span>
+            <span class="text-xs text-gray-500 mt-1">Bayar tunai saat kurir lokal mengantar</span>
+            <input type="radio" name="payment" value="COD" class="mt-3 accent-primary-600">
+          </label>
+          <label class="border border-gray-200 dark:border-gray-700 p-4 rounded-xl flex flex-col cursor-pointer hover:border-gray-400">
+            <span class="font-semibold text-sm">Transfer Bank</span>
+            <span class="text-xs text-gray-500 mt-1">Transfer manual ke Rekening UMKM</span>
+            <input type="radio" name="payment" value="TRANSFER" class="mt-3 accent-primary-600">
+          </label>
+        </div>
+      </div>
+
+      <!-- Submit Action -->
+      <button type="submit" class="w-full bg-primary-600 hover:bg-primary-700 text-white font-bold py-3.5 rounded-xl shadow-lg transition flex items-center justify-center space-x-2 text-base">
+        <i data-lucide="message-circle" class="w-5 h-5"></i>
+        <span>Pesan Sekarang & Kirim via WhatsApp</span>
+      </button>
+    </form>
+  </main>
+
+  <script src="assets/js/api.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      lucide.createIcons();
+      const cart = JSON.parse(localStorage.getItem("pager_cart") || "[]");
+      if (cart.length === 0) {
+        alert("Keranjang belanja kosong!");
+        window.location.href = "cart.html";
+      }
+
+      document.getElementById("checkout-form").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const nama = document.getElementById("nama").value;
+        const wa = document.getElementById("whatsapp").value;
+        const alamat = document.getElementById("alamat").value;
+
+        // Generate Nomor Order Spesifik
+        const now = new Date();
+        const orderNo = `PG-${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}-${Math.floor(1000 + Math.random() * 9000)}`;
+
+        let subtotal = cart.reduce((sum, item) => sum + (item.harga * item.qty), 0);
+        let total = subtotal + 10000;
+
+        let produkListStr = cart.map(item => `- ${item.nama_produk} x${item.qty} (Rp${(item.harga * item.qty).toLocaleString('id-ID')})`).join("\n");
+
+        let waMessage = `Halo, saya ingin melakukan pemesanan melalui Marketplace UMKM Kelurahan Pager.\n\n*No. Order:* ${orderNo}\n\n*Produk Pesanan:*\n${produkListStr}\n\n*Subtotal:* Rp${subtotal.toLocaleString('id-ID')}\n*Ongkir:* Rp10.000\n*Total Tagihan:* Rp${total.toLocaleString('id-ID')}\n\n*Data Pemesan:*\nNama: ${nama}\nNo. WA: ${wa}\nAlamat: ${alamat}`;
+
+        // Hapus keranjang setelah checkout
+        localStorage.removeItem("pager_cart");
+
+        // Buka WhatsApp UMKM (Ganti dengan nomor admin/UMKM tujuan)
+        const targetWa = "6281234567890"; 
+        window.open(`https://wa.me/${targetWa}?text=${encodeURIComponent(waMessage)}`, "_blank");
+        
+        alert("Pesanan berhasil dibuat! Anda dialihkan ke WhatsApp.");
+        window.location.href = "index.html";
+      });
+    });
+  </script>
+</body>
+</html>
