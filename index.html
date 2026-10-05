@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="id" class="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UMKM Kelurahan Pager - Direktori & Marketplace Digital Warga</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              500: '#22c55e',
+              600: '#16a34a',
+              700: '#15803d',
+              800: '#166534',
+              900: '#14532d',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 min-h-screen flex flex-col font-sans pb-16 md:pb-0">
+
+  <!-- HEADER / NAVBAR -->
+  <header class="sticky top-0 z-40 bg-white/90 dark:bg-gray-800/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="index.html" class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-primary-600 flex items-center justify-center text-white font-bold text-xl shadow-md">
+          P
+        </div>
+        <div>
+          <span class="font-bold text-lg leading-tight block text-gray-900 dark:text-white">UMKM Pager</span>
+          <span class="text-xs text-gray-500 dark:text-gray-400 block">Kelurahan Digital</span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation Menu -->
+      <nav class="hidden md:flex items-center space-x-6 text-sm font-medium">
+        <a href="index.html" class="text-primary-600 dark:text-primary-400 font-semibold">Beranda</a>
+        <a href="products.html" class="hover:text-primary-600 transition">Produk</a>
+        <a href="umkm.html" class="hover:text-primary-600 transition">Direktori UMKM</a>
+        <a href="berita.html" class="hover:text-primary-600 transition">Berita & Event</a>
+      </nav>
+
+      <!-- Action Buttons & Icons -->
+      <div class="flex items-center space-x-4">
+        <!-- Cart Button -->
+        <a href="cart.html" class="relative p-2 text-gray-600 dark:text-gray-300 hover:text-primary-600 transition" aria-label="Keranjang Belanja">
+          <i data-lucide="shopping-cart" class="w-6 h-6"></i>
+          <span id="cart-badge" class="absolute top-1 right-1 bg-red-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center hidden">0</span>
+        </a>
+
+        <!-- Notification Bell -->
+        <button id="notif-btn" class="p-2 text-gray-600 dark:text-gray-300 hover:text-primary-600 transition relative" aria-label="Notifikasi">
+          <i data-lucide="bell" class="w-6 h-6"></i>
+        </button>
+
+        <!-- Login / Account Profile -->
+        <div id="auth-action-container">
+          <a href="login.html" class="inline-flex items-center space-x-2 bg-primary-600 hover:bg-primary-700 text-white text-sm font-medium px-4 py-2 rounded-lg shadow transition">
+            <i data-lucide="log-in" class="w-4 h-4"></i>
+            <span>Masuk</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="flex-grow">
+    
+    <!-- HERO SECTION -->
+    <section class="relative bg-gradient-to-br from-primary-900 via-primary-800 to-gray-900 text-white py-16 lg:py-24 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-4xl mx-auto text-center space-y-6">
+        <span class="inline-flex items-center space-x-2 bg-primary-800/80 border border-primary-500/30 text-primary-200 text-xs font-semibold px-3 py-1.5 rounded-full">
+          <i data-lucide="store" class="w-3.5 h-3.5"></i>
+          <span>Resmi Warga Kelurahan Pager</span>
+        </span>
+        <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight">
+          Belanja Produk Lokal <span class="text-primary-400">Kelurahan Pager</span>
+        </h1>
+        <p class="text-base sm:text-lg text-gray-300 max-w-2xl mx-auto">
+          Temukan produk berkualitas tinggi, kuliner khas, dan aneka kerajinan tangan terbaik langsung dari UMKM warga Kelurahan Pager.
+        </p>
+        
+        <!-- Big Search Bar -->
+        <div class="max-w-2xl mx-auto pt-4">
+          <form action="products.html" method="GET" class="flex items-center bg-white dark:bg-gray-800 rounded-xl p-2 shadow-2xl border border-gray-200 dark:border-gray-700">
+            <div class="pl-3 text-gray-400">
+              <i data-lucide="search" class="w-5 h-5"></i>
+            </div>
+            <input type="text" name="q" placeholder="Cari produk atau nama UMKM warga..." class="w-full px-3 py-2 bg-transparent text-gray-800 dark:text-white focus:outline-none text-sm sm:text-base">
+            <button type="submit" class="bg-primary-600 hover:bg-primary-700 text-white font-semibold px-6 py-2.5 rounded-lg transition text-sm sm:text-base">
+              Cari
+            </button>
+          </form>
+        </div>
+
+        <!-- Quick CTAs -->
+        <div class="flex flex-wrap justify-center gap-4 pt-4">
+          <a href="products.html" class="bg-white text-gray-900 hover:bg-gray-100 font-semibold px-6 py-3 rounded-xl shadow transition text-sm">
+            Belanja Sekarang
+          </a>
+          <a href="login.html?register=umkm" class="bg-primary-700/60 hover:bg-primary-700 border border-primary-500/40 text-white font-semibold px-6 py-3 rounded-xl transition text-sm">
+            Daftar UMKM Toko
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- KATEGORI GRID -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div class="flex items-center justify-between mb-8">
+        <div>
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Kategori Pilihan</h2>
+          <p class="text-sm text-gray-500 dark:text-gray-400">Jelajahi produk berdasarkan kategori usaha warga</p>
+        </div>
+        <a href="products.html" class="text-sm font-semibold text-primary-600 hover:text-primary-700 flex items-center space-x-1">
+          <span>Lihat Semua</span>
+          <i data-lucide="chevron-right" class="w-4 h-4"></i>
+        </a>
+      </div>
+
+      <div id="categories-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+        <!-- Dynamic Category Cards Rendered by JS -->
+        <div class="animate-pulse bg-gray-200 dark:bg-gray-800 h-28 rounded-xl"></div>
+        <div class="animate-pulse bg-gray-200 dark:bg-gray-800 h-28 rounded-xl"></div>
+        <div class="animate-pulse bg-gray-200 dark:bg-gray-800 h-28 rounded-xl"></div>
+        <div class="animate-pulse bg-gray-200 dark:bg-gray-800 h-28 rounded-xl"></div>
+      </div>
+    </section>
+
+    <!-- PRODUK UNGGULAN -->
+    <section class="bg-gray-100 dark:bg-gray-800/50 py-12 border-y border-gray-200 dark:border-gray-700">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between mb-8">
+          <div>
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Produk Unggulan UMKM</h2>
+            <p class="text-sm text-gray-500 dark:text-gray-400">Pilihan terbaik warga Kelurahan Pager minggu ini</p>
+          </div>
+          <a href="products.html" class="text-sm font-semibold text-primary-600 hover:text-primary-700 flex items-center space-x-1">
+            <span>Semua Produk</span>
+            <i data-lucide="chevron-right" class="w-4 h-4"></i>
+          </a>
+        </div>
+
+        <div id="featured-products-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <!-- Dynamic Products Rendered by JS -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-8 mt-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-gray-500 dark:text-gray-400 space-y-2">
+      <p>&copy; 2026 UMKM Kelurahan Pager. Hak Cipta Dilindungi Undang-Undang.</p>
+      <p>Pusat Digitalisasi, Direktori, dan Marketplace Resmi Warga Kelurahan.</p>
+    </div>
+  </footer>
+
+  <!-- MOBILE BOTTOM NAVIGATION -->
+  <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 z-50 flex justify-around py-2 shadow-lg">
+    <a href="index.html" class="flex flex-col items-center text-primary-600 text-xs">
+      <i data-lucide="home" class="w-5 h-5"></i>
+      <span class="mt-1">Beranda</span>
+    </a>
+    <a href="products.html" class="flex flex-col items-center text-gray-500 dark:text-gray-400 text-xs hover:text-primary-600">
+      <i data-lucide="grid" class="w-5 h-5"></i>
+      <span class="mt-1">Produk</span>
+    </a>
+    <a href="cart.html" class="flex flex-col items-center text-gray-500 dark:text-gray-400 text-xs hover:text-primary-600 relative">
+      <i data-lucide="shopping-cart" class="w-5 h-5"></i>
+      <span class="mt-1">Keranjang</span>
+    </a>
+    <a href="orders.html" class="flex flex-col items-center text-gray-500 dark:text-gray-400 text-xs hover:text-primary-600">
+      <i data-lucide="package" class="w-5 h-5"></i>
+      <span class="mt-1">Pesanan</span>
+    </a>
+    <a href="profile.html" class="flex flex-col items-center text-gray-500 dark:text-gray-400 text-xs hover:text-primary-600">
+      <i data-lucide="user" class="w-5 h-5"></i>
+      <span class="mt-1">Akun</span>
+    </a>
+  </nav>
+
+  <!-- SCRIPTS -->
+  <script src="assets/js/api.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      lucide.createIcons();
+
+      // 1. Load Categories
+      const catRes = await ApiService.get("categories.list");
+      const catGrid = document.getElementById("categories-grid");
+      if (catRes.success && catRes.data.length > 0) {
+        catGrid.innerHTML = catRes.data.map(cat => `
+          <a href="products.html?category=${cat.id}" class="bg-white dark:bg-gray-800 p-4 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-primary-500 transition flex flex-col items-center text-center group shadow-sm">
+            <div class="w-12 h-12 rounded-xl bg-primary-50 dark:bg-primary-900/40 text-primary-600 dark:text-primary-400 flex items-center justify-center mb-3 group-hover:scale-110 transition">
+              <i data-lucide="${cat.icon || 'tag'}" class="w-6 h-6"></i>
+            </div>
+            <span class="font-semibold text-xs sm:text-sm text-gray-800 dark:text-gray-200">${cat.nama}</span>
+          </a>
+        `).join("");
+        lucide.createIcons();
+      } else {
+        catGrid.innerHTML = `<p class="col-span-full text-center text-gray-500 text-sm">Kategori belum tersedia.</p>`;
+      }
+
+      // 2. Load Featured Products
+      const prodRes = await ApiService.get("products.list");
+      const prodGrid = document.getElementById("featured-products-grid");
+      if (prodRes.success && prodRes.data.length > 0) {
+        prodGrid.innerHTML = prodRes.data.slice(0, 8).map(prod => `
+          <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm flex flex-col group">
+            <div class="relative aspect-square bg-gray-100 dark:bg-gray-700 overflow-hidden">
+              <img src="${prod.foto_utama || 'https://via.placeholder.com/300'}" alt="${prod.nama_produk}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+              <span class="absolute top-2 left-2 bg-primary-600 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow">Terverifikasi</span>
+            </div>
+            <div class="p-4 flex flex-col flex-grow">
+              <span class="text-xs text-gray-400 mb-1">UMKM Pager</span>
+              <h3 class="font-semibold text-sm sm:text-base line-clamp-2 text-gray-800 dark:text-white mb-2 flex-grow">${prod.nama_produk}</h3>
+              <div class="flex items-center justify-between mt-auto">
+                <div>
+                  <span class="text-primary-600 dark:text-primary-400 font-bold text-sm sm:text-base">Rp${Number(prod.harga).toLocaleString('id-ID')}</span>
+                </div>
+                <a href="product-detail.html?slug=${prod.slug}" class="bg-primary-50 dark:bg-primary-900/40 text-primary-600 hover:bg-primary-600 hover:text-white p-2 rounded-lg transition" aria-label="Beli Produk">
+                  <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        `).join("");
+        lucide.createIcons();
+      } else {
+        prodGrid.innerHTML = `<p class="col-span-full text-center text-gray-500 text-sm py-8">Belum ada produk unggulan.</p>`;
+      }
+    });
+  </script>
+</body>
+</html>
