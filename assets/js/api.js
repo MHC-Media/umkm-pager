@@ -21,14 +21,12 @@ const ApiService = {
     }
   },
 
-  async post(action, payload = {}) {
+async post(action, payload = {}) {
     try {
-      const response = await fetch(API_CONFIG.BASE_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "text/plain;charset=utf-8", // Mencegah preflight CORS issues di Apps Script
-        },
-        body: JSON.stringify({ action, ...payload })
+      // Mengirim action dan payload sebagai query parameters untuk mencegah masalah 302 redirect POST di Google Apps Script
+      const queryParams = new URLSearchParams({ action, ...payload });
+      const response = await fetch(`${API_CONFIG.BASE_URL}?${queryParams.toString()}`, {
+        method: "GET", // Menggunakan GET dengan query string lebih stabil di Apps Script Web App
       });
       const result = await response.json();
       return result;
@@ -36,7 +34,7 @@ const ApiService = {
       console.error("API POST Error:", error);
       return { success: false, message: "Koneksi ke server gagal: " + error.message };
     }
-  },
+  }
 
   getSession() {
     return localStorage.getItem("pager_session_id");
