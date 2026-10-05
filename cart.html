@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="id" class="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Keranjang Belanja - UMKM Kelurahan Pager</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: { 500: '#22c55e', 600: '#16a34a', 700: '#15803d' }
+          }
+        }
+      }
+    }
+  </script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 min-h-screen flex flex-col font-sans pb-20 md:pb-0">
+
+  <!-- HEADER -->
+  <header class="sticky top-0 z-40 bg-white/90 dark:bg-gray-800/95 backdrop-blur border-b border-gray-200 dark:border-gray-700 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+      <a href="index.html" class="flex items-center space-x-2 text-gray-900 dark:text-white font-bold text-lg">
+        <i data-lucide="arrow-left" class="w-5 h-5"></i>
+        <span>Keranjang Belanja</span>
+      </a>
+      <span id="cart-item-count" class="text-sm text-gray-500">0 Produk</span>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
+    
+    <!-- DAFTAR ITEM KERANJANG -->
+    <div class="lg:col-span-2 space-y-4" id="cart-items-container">
+      <!-- Diisi dinamis oleh JavaScript -->
+      <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-sm text-center">
+        <p class="text-gray-500">Keranjang belanja Anda masih kosong.</p>
+        <a href="products.html" class="mt-4 inline-block bg-primary-600 text-white px-6 py-2.5 rounded-lg font-semibold text-sm">Mulai Belanja</a>
+      </div>
+    </div>
+
+    <!-- RINGKASAN BELANJA / CHECKOUT SUMMARY -->
+    <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm h-fit space-y-4">
+      <h3 class="font-bold text-lg border-b border-gray-100 dark:border-gray-700 pb-3">Ringkasan Belanja</h3>
+      
+      <div class="space-y-2 text-sm">
+        <div class="flex justify-between">
+          <span class="text-gray-500">Subtotal</span>
+          <span id="summary-subtotal" class="font-semibold">Rp0</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-gray-500">Estimasi Ongkir</span>
+          <span id="summary-ongkir" class="font-semibold">Rp10.000</span>
+        </div>
+        <div class="border-t border-gray-100 dark:border-gray-700 pt-2 flex justify-between text-base font-bold">
+          <span>Total Tagihan</span>
+          <span id="summary-total" class="text-primary-600">Rp0</span>
+        </div>
+      </div>
+
+      <a href="checkout.html" id="checkout-btn" class="w-full bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 rounded-xl shadow transition block text-center opacity-50 pointer-events-none">
+        Lanjut ke Checkout
+      </a>
+    </div>
+  </main>
+
+  <script src="assets/js/api.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      lucide.createIcons();
+      loadCartView();
+    });
+
+    function getCart() {
+      return JSON.parse(localStorage.getItem("pager_cart") || "[]");
+    }
+
+    function saveCart(cart) {
+      localStorage.setItem("pager_cart", JSON.stringify(cart));
+      loadCartView();
+    }
+
+    function loadCartView() {
+      const cart = getCart();
+      const container = document.getElementById("cart-items-container");
+      const countLabel = document.getElementById("cart-item-count");
+      const checkoutBtn = document.getElementById("checkout-btn");
+      
+      countLabel.textContent = `${cart.length} Produk`;
+
+      if (cart.length === 0) {
+        container.innerHTML = `
+          <div class="bg-white dark:bg-gray-800 p-12 rounded-2xl border border-gray-200 dark:border-gray-700 text-center space-y-4">
+            <div class="w-16 h-16 bg-primary-50 text-primary-600 rounded-full flex items-center justify-center mx-auto">
+              <i data-lucide="shopping-cart" class="w-8 h-8"></i>
+            </div>
+            <h4 class="font-bold text-lg">Keranjang Belanja Kosong</h4>
+            <p class="text-gray-500 text-sm max-w-sm mx-auto">Yuk, temukan berbagai produk berkualitas dari UMKM warga Kelurahan Pager sekarang!</p>
+            <a href="products.html" class="inline-block bg-primary-600 hover:bg-primary-700 text-white px-6 py-2.5 rounded-xl font-semibold text-sm transition">Cari Produk Lokal</a>
+          </div>`;
+        document.getElementById("summary-subtotal").textContent = "Rp0";
+        document.getElementById("summary-total").textContent = "Rp0";
+        checkoutBtn.classList.add("opacity-50", "pointer-events-none");
+        lucide.createIcons();
+        return;
+      }
+
+      checkoutBtn.classList.remove("opacity-50", "pointer-events-none");
+
+      let subtotal = 0;
+      container.innerHTML = cart.map((item, index) => {
+        subtotal += item.harga * item.qty;
+        return `
+          <div class="bg-white dark:bg-gray-800 p-4 rounded-2xl border border-gray-200 dark:border-gray-700 flex items-center space-x-4">
+            <img src="${item.foto_utama || 'https://via.placeholder.com/100'}" alt="${item.nama_produk}" class="w-20 h-20 object-cover rounded-xl bg-gray-100 flex-shrink-0">
+            <div class="flex-grow">
+              <h4 class="font-bold text-sm sm:text-base text-gray-900 dark:text-white line-clamp-1">${item.nama_produk}</h4>
+              <p class="text-primary-600 font-bold text-sm mt-1">Rp${Number(item.harga).toLocaleString('id-ID')}</p>
+              <div class="flex items-center space-x-3 mt-3">
+                <button onclick="updateQty(${index}, -1)" class="w-7 h-7 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center hover:bg-gray-200 transition"><i data-lucide="minus" class="w-3.5 h-3.5"></i></button>
+                <span class="font-semibold text-sm">${item.qty}</span>
+                <button onclick="updateQty(${index}, 1)" class="w-7 h-7 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center hover:bg-gray-200 transition"><i data-lucide="plus" class="w-3.5 h-3.5"></i></button>
+                <button onclick="removeItem(${index})" class="text-red-500 hover:text-red-700 ml-auto p-1" title="Hapus"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+              </div>
+            </div>
+          </div>`;
+      }).join("");
+
+      const ongkir = 10000;
+      const total = subtotal + ongkir;
+
+      document.getElementById("summary-subtotal").textContent = `Rp${subtotal.toLocaleString('id-ID')}`;
+      document.getElementById("summary-ongkir").textContent = `Rp${ongkir.toLocaleString('id-ID')}`;
+      document.getElementById("summary-total").textContent = `Rp${total.toLocaleString('id-ID')}`;
+      lucide.createIcons();
+    }
+
+    window.updateQty = function(index, delta) {
+      let cart = getCart();
+      cart[index].qty += delta;
+      if (cart[index].qty <= 0) {
+        cart.splice(index, 1);
+      }
+      saveCart(cart);
+    }
+
+    window.removeItem = function(index) {
+      let cart = getCart();
+      cart.splice(index, 1);
+      saveCart(cart);
+    }
+  </script>
+</body>
+</html>
